@@ -46,7 +46,3 @@ workflows:
         requires:
           - build
         environment: "production"
-        filters:
-            branches:
-              only:
-                - workshop/*
