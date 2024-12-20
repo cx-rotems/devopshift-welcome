@@ -13,29 +13,9 @@ jobs:
       - run:
           name: "Build Application"
           command: |
-            echo "Building in << pipeline.parameters.environment >> environment"
-  build2:
-    docker:
-      - image: circleci/node:latest
-    steps:
-      - run:
-          name: "Build Application"
-          command: |
-            echo "Building in << pipeline.parameters.environment >> environment"         
-  test:
-    parameters:
-      env:
-        type: string
-    docker:
-      - image: circleci/python:3.8
-    steps:
-      - run: echo "Deploying to << parameters.env >>"
+            echo "Building in << pipeline.parameters.environment >> environment" >>"
 workflows:
  version: 2
  deployment:
    jobs:
      - build
-     - build2:
-         environment: "production"
-     - test:  # Corrected indentation
-         env: test  
