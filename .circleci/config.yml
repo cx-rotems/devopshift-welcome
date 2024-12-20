@@ -13,7 +13,7 @@ jobs:
       - run:
           name: "Build Application"
           command: |
-            echo "Building in << pipeline.parameters.environment >> environment" >>"
+            echo "Building in << pipeline.parameters.environment >> environment"
 workflows:
  version: 2
  deployment:
