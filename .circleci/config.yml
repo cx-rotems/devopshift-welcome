@@ -14,8 +14,29 @@ jobs:
           name: "Build Application"
           command: |
             echo "Building in << pipeline.parameters.environment >> environment"
+  deploy :
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - when:
+          condition:
+            and:
+             - equal: [ << pipeline.parameters.production >>, "production" ]
+          steps:
+           - run:
+              name: "deploy Application"
+              command: |
+                  echo "Running on branch: $CIRCLE_BRANCH" |
+                  echo "Deploy to << pipeline.parameters.environment >> environment"
+
 workflows:
  version: 2
  deployment:
    jobs:
      - build
+     - deploy:
+        environment: "production"
+        filters:
+            branches:
+              only:
+                - workshop/*
