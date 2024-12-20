@@ -1,52 +1,38 @@
 version: 2.1
 
-parameters:
-  environment:
-    type: string
-    default: "staging"
-    enum: ["staging", "production"]
-
+orbs:
+  slack: circleci/slack@5.1.1
 jobs:
   build:
     docker:
-      - image: circleci/node:latest
+      - image: cimg/base:current
     steps:
       - checkout
       - run:
-          name: "Build Application"
+          name: Mock Build Step
           command: |
-            echo "Running on branch: $CIRCLE_BRANCH"
-  deploy :
-    docker:
-      - image: circleci/node:latest
-    parameters:
-      environment:
-        type: string
-    steps:
-      - run:
-          name: "deploy Application"
-          command: 
-                echo "Deploy to << parameters.environment >> environment"
-      - when:
-          condition:
-            and:
-             - equal: [ << parameters.environment >>, "production" ]
-          steps:
-           - run:
-              name: "production verfication"
-              command: 
-                  echo "Perfomcing production verfication"
+            echo "Starting the mock build..."
+            sleep 10
+            echo "Build complete."
+      - slack/notify:
+          event: pass
+          template: basic_success_1
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Mock Build Completed Successfully by rotem*"
+                  }
+                }
+              ]
+            }
 
 workflows:
  version: 2
- deployment:
+ simple-build-notify:
    jobs:
-     - build
-     - deploy:
-        requires:
-          - build
-        environment: "production"
-        filters:
-            branches:
-              only:
-                - master
+     - build_and_test: 
+        context: slack-secrests
