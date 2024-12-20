@@ -15,7 +15,7 @@ jobs:
       - run:
           name: "Build Application"
           command: |
-            echo "Running on branch: $CIRCLE_BRANCH" | 
+            echo "Running on branch: $CIRCLE_BRANCH"
   deploy :
     docker:
       - image: circleci/node:latest
